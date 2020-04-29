@@ -21,8 +21,8 @@ LABEL name="$JBOSS_IMAGE_NAME" \
       architecture="x86_64"  \
       maintainer="LPETERS999"	
 RUN mkdir /opt/jboss
-ADD https://github.com/LPETERS006/eap-full-build/blob/7.1.1/files /opt/jboss  
 COPY --from=builder /tmp/eap-build/dist/jboss-eap-7.1 /opt/jboss
+ADD https://github.com/LPETERS006/eap-full-build/blob/7.1.1/files /opt/jboss  
 RUN apk update \
 	&& apk add --no-cache --allow-untrusted -f --force-broken-world --clean-protected -u -U -l -q -v openjdk8 fontconfig ttf-dejavu \
 	&& ln -s -f "/usr/lib/jvm/java-1.8-openjdk/bin/javac" /usr/bin/javac \ 
