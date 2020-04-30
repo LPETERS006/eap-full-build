@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<module xmlns="urn:jboss:module:1.0" name="org.postgresql">
+<module xmlns="urn:jboss:module:1.0" name="com.mysql">
 	<resources>
-		<resource-root path="postgresql-42.2.12.jar"/>
-		<resource-root path="postgis-jdbc-2.5.0.jar"/>
+		<resource-root path="mysql-connector-java-8.0.20.jar"/>
 	</resources>
 	<dependencies>
 		<module name="javax.api"/>

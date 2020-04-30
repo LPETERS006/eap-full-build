@@ -11,7 +11,7 @@ RUN cd /tmp/eap-build \
 	&& chown -R 888:root /tmp/eap-build/dist/jboss-eap-7.1 && chmod 0755 /tmp/eap-build/dist/jboss-eap-7.1 && chmod -R g+rwX /tmp/eap-build/dist/jboss-eap-7.1
 	
 FROM alpine:latest	
-ENV JBOSS_IMAGE_NAME="lpeters999/jboss-eap-alpine" \
+ENV JBOSS_IMAGE_NAME="lpeters999/eap-full-ci" \
     JBOSS_IMAGE_VERSION="7.1.1" \
     LAUNCH_JBOSS_IN_BACKGROUND="true" \
     JBOSS_PRODUCT="eap" \
@@ -33,10 +33,9 @@ RUN apk update \
 	&& ln -s -f "/usr/lib/jvm/java-1.8-openjdk/bin/javac" /usr/bin/javac \ 
 	&& addgroup -g 888 -S jboss \
 	&& adduser -u 888 -D -h ${JBOSS_HOME} -s /bin/ash -S jboss -G root \
-#	&& chown -R 888:root /opt/jboss && chmod 0755 /opt/jboss && chmod -R g+rwX /opt/jboss \
 	&& chmod +x ${JBOSS_HOME}/bin/add-user.sh \
-	&& wait \
-	&& rm -rf /var/cache/apk/* /tmp/* /tmp* /usr/share/man /var/tmp/* 
+	&& rm -rf /var/cache/apk/* /tmp/* /tmp* /usr/share/man /var/tmp/* \ 
+	&& wait 
 USER 888
 RUN ${JBOSS_HOME}/bin/add-user.sh admin Admin#007 --silent
 EXPOSE 8090 9990
