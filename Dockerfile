@@ -8,11 +8,11 @@ RUN cd /tmp/eap-build \
 	&& cp -R -f /tmp/eap-full-build/files/* /tmp/eap-build/dist/jboss-eap-6.3/ \
 	&& addgroup -g 888 -S jboss \
 	&& adduser -u 888 -D -h /tmp/eap-build/dist/jboss-eap-6.3 -s /bin/ash -S jboss -G root \
-	&& chown -R 888:root /tmp/eap-build/dist/jboss-eap-6.3 && chmod 0755 /tmp/eap-build/dist/jboss-eap-7.1 && chmod -R g+rwX /tmp/eap-build/dist/jboss-eap-6.3
+	&& chown -R 888:root /tmp/eap-build/dist/jboss-eap-6.3 && chmod 0755 /tmp/eap-build/dist/jboss-eap-6.3 && chmod -R g+rwX /tmp/eap-build/dist/jboss-eap-6.3
 	
 FROM alpine:latest	
 ENV JBOSS_IMAGE_NAME="lpeters999/eap-full-ci" \
-    JBOSS_IMAGE_VERSION="7.1.1" \
+    JBOSS_IMAGE_VERSION="6.3.3" \
     LAUNCH_JBOSS_IN_BACKGROUND="true" \
     JBOSS_PRODUCT="eap" \
     JBOSS_EAP_VERSION="6.3.3" \
