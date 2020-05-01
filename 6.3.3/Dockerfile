@@ -33,7 +33,7 @@ LABEL name="$JBOSS_IMAGE_NAME" \
       architecture="x86_64"  \
       maintainer="LPETERS999"	
 RUN mkdir -p ${JBOSS_HOME}
-COPY --from=builder /tmp/eap-build/dist/jboss-eap-{PRODUCT_VERSION} ${JBOSS_HOME}
+COPY --from=builder /tmp/eap-build/dist/jboss-eap-6.3 /opt/jboss
 RUN apk update \
 	&& apk add --no-cache --allow-untrusted -f --force-broken-world --clean-protected -u -U -l -q -v openjdk8 fontconfig ttf-dejavu \
 	&& ln -s -f "/usr/lib/jvm/java-1.8-openjdk/bin/javac" /usr/bin/javac \ 
