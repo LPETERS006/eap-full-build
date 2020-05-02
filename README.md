@@ -1,8 +1,12 @@
 # eap-full-build
-# Own compiled JBoss with postgres, postgis (hibernate-spatial)
+# Own compiled JBoss with postgres, postgis, hibernate-spatial (version specific)
 (In case that publishing that images violates applicable law, please PM me! )
 
 Now Transparent including compile of sources
+
+TAG - Builds for the following versions :
+latest-6.3.0, latest-6.3.3, latest-6.4.0, latest-6.4.2, latest-6.4.9, latest-6.4.10, latest-6.4.19, latest-6.4.20, latest-6.4.22
+latest-7.1.0 latest-7.1.1, latest-7.1.2, latest-7.1.4, latest-7.2.0, latest-7.2.7, latest-7.3.0
 
 # volumes for standalone and other stuff
     volumes:
