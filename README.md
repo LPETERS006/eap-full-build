@@ -11,11 +11,11 @@ Now Transparent including compile of sources
       - './configuration:/opt/jboss/standalone/configuration'
 
 # newer builds without modifed standalone.xml (everyone knows how to add drivers and datascources!)
-
       
 (!! All files from configuration will exposed after first startup. Than you can easily edit standalone.xml and do a restart)
 
-# moved 8080 -> 8090 (conflict with another project from me, you can Change back by editing [ENTRYPOINT] in Dockerfile)
+# moved 8080 -> 8090 & 9990 -> 10000 (offset +10)(conflict with another project from me, you can change back by editing [ENTRYPOINT] in Dockerfile)
+
     ports:
       - '8090:8090' 
-      - '9999:9999'
+      - '10000:10000'
