@@ -5,10 +5,10 @@ RUN cd /tmp/eap-build \
         && unzip jboss-eap-7.2.0.zip \
         && cd /tmp \
         && git clone https://github.com/LPETERS006/eap-full-build.git \
-        && cp -R -f /tmp/eap-full-build/7.2.0/files/* /tmp/eap-build/dist/jboss-eap-/ \
+        && cp -R -f /tmp/eap-full-build/7.2.0/files/* /tmp/eap-build/dist/jboss-eap-7.2/ \
         && addgroup -g 888 -S jboss \
-        && adduser -u 888 -D -h /tmp/eap-build/dist/jboss-eap- -s /bin/ash -S jboss -G root \
-        && chown -R 888:root /tmp/eap-build/dist/jboss-eap- && chmod 0755 /tmp/eap-build/dist/jboss-eap- && chmod -R g+rwX /tmp/eap-build/dist/jboss-eap-
+        && adduser -u 888 -D -h /tmp/eap-build/dist/jboss-eap-7.2 -s /bin/ash -S jboss -G root \
+        && chown -R 888:root /tmp/eap-build/dist/jboss-eap-7.2 && chmod 0755 /tmp/eap-build/dist/jboss-eap-7.2 && chmod -R g+rwX /tmp/eap-build/dist/jboss-eap-7.2
 
 FROM alpine:latest
 ENV JBOSS_IMAGE_NAME="lpeters999/eap-full-ci" \
@@ -27,7 +27,7 @@ LABEL name="$JBOSS_IMAGE_NAME" \
       architecture="x86_64"  \
       maintainer="LPETERS999"
 RUN mkdir -p /opt/jboss/
-COPY --from=builder /tmp/eap-build/dist/jboss-eap- /opt/jboss
+COPY --from=builder /tmp/eap-build/dist/jboss-eap-7.2 /opt/jboss
 RUN apk update \
         && apk add --no-cache --allow-untrusted -f --force-broken-world --clean-protected -u -U -l -q -v openjdk8 fontconfig ttf-dejavu \
         && ln -s -f "/usr/lib/jvm/java-1.8-openjdk/bin/javac" /usr/bin/javac \
