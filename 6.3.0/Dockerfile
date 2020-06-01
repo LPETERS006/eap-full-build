@@ -21,7 +21,6 @@ ENV JBOSS_IMAGE_NAME="lpeters999/eap-full-ci" \
     JBOSS_HOME="/opt/jboss" \
     JBOSS_CONFIG_DIR="/opt/jboss/standalone/configuration" \
     JBOSS_DEPLOY_DIR="/opt/jboss/standalone/deployments" \
-	JBOSS_ADMIN_PASSWORD="Admin#007" \
     LANG="C.UTF-8"
 LABEL name="$JBOSS_IMAGE_NAME" \
       version="$JBOSS_IMAGE_VERSION" \
@@ -39,7 +38,7 @@ RUN apk update \
         && wait \
         && mkdir -p /opt/jboss/fr
 USER 888
-RUN /opt/jboss/bin/add-user.sh admin ${JBOSS_ADMIN_PASSWORD} --silent
+RUN /opt/jboss/bin/add-user.sh admin Admin#007 --silent
 EXPOSE 8090 10000
 WORKDIR /opt/jboss
 VOLUME [ "/opt/jboss/standalone/deployments", "/opt/jboss/standalone/configuration", "/opt/jboss/fr" ]

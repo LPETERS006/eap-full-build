@@ -35,9 +35,11 @@ RUN apk update \
         && adduser -u 888 -D -h /opt/jboss -s /bin/ash -S jboss -G root \
         && chmod +x /opt/jboss/bin/add-user.sh \
         && rm -rf /var/cache/apk/* /tmp/* /tmp* /usr/share/man /var/tmp/* \
-        && wait
+        && wait \
+        && mkdir -p /opt/jboss/fr
 USER 888
 RUN /opt/jboss/bin/add-user.sh admin Admin#007 --silent
 EXPOSE 8090 10000
 WORKDIR /opt/jboss
+VOLUME [ "/opt/jboss/standalone/deployments", "/opt/jboss/standalone/configuration", "/opt/jboss/fr" ]
 ENTRYPOINT ["sh", "-c", "/opt/jboss/bin/standalone.sh -b 0.0.0.0 -bmanagement 0.0.0.0 -Djboss.socket.binding.port-offset=10"]
