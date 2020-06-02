@@ -1,5 +1,4 @@
 FROM lpeters999/base-eap:latest as builder
-
 RUN cd /tmp \
         && git clone https://github.com/LPETERS006/eap-full-build.git \
 		&& cp -f /tmp/eap-full-build/7.0.5/jboss-eap-7.properties /tmp/eap-build/src/jboss-eap-7.properties \
