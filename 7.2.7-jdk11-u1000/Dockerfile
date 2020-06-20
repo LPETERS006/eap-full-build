@@ -6,9 +6,9 @@ RUN cd /tmp/eap-build \
         && cd /tmp \
         && git clone https://github.com/LPETERS006/eap-full-build.git \
         && cp -R -f /tmp/eap-full-build/7.2.7/files/* /tmp/eap-build/dist/jboss-eap-7.2/ \
-		&& groupadd -r jboss -g 1000 \
-		&& useradd -u 1000 -r -g jboss -m -d /opt/jboss -s /sbin/nologin -c "JBoss user" jboss \ 
-		&& chmod 755 /tmp/eap-build/dist/jboss-eap-7.2
+ 		&& addgroup -g 1000 -S jboss \
+	    && adduser -u 1000 -D -h /opt/jboss -s /bin/ash -S jboss -G jboss \
+		&& chown -R 1000:jboss /tmp/eap-build/dist/jboss-eap-7.2 && chmod 0755 /tmp/eap-build/dist/jboss-eap-7.2
 
 FROM alpine:latest
 ENV JBOSS_IMAGE_NAME="lpeters999/eap-full-ci" \
@@ -35,8 +35,8 @@ RUN apk update \
         && rm -rf /var/cache/apk/* /tmp/* /tmp* /usr/share/man /var/tmp/* \
         && wait \
         && mkdir -p /opt/jboss/fr \
-		&& groupadd -r jboss -g 1000 \
-		&& useradd -u 1000 -r -g jboss -m -d /opt/jboss -s /sbin/nologin -c "JBoss user" jboss \
+ 		&& addgroup -g 1000 -S jboss \
+	    && adduser -u 1000 -D -h /opt/jboss -s /bin/ash -S jboss -G jboss \
 		&& chmod 755 /opt/jboss
 USER 1000
 RUN /opt/jboss/bin/add-user.sh admin Admin#007 --silent
