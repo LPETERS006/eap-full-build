@@ -6,9 +6,9 @@ RUN cd /tmp/eap-build \
         && cd /tmp \
         && git clone https://github.com/LPETERS006/eap-full-build.git \
         && cp -R -f /tmp/eap-full-build/7.2.7/files/* /tmp/eap-build/dist/jboss-eap-7.2/ \
- 		&& addgroup -g 501 -S jboss \
-	    && adduser -u 501 -D -h /opt/jboss -s /bin/ash -S jboss -G jboss \
-		&& chown -R 501:jboss /tmp/eap-build/dist/jboss-eap-7.2 && chmod 0755 /tmp/eap-build/dist/jboss-eap-7.2
+        && addgroup -g 433 -S jboss \
+	&& adduser -u 431 -D -h /opt/jboss -s /bin/ash -S jboss -G jboss \
+        && chown -R 431:433 /tmp/eap-build/dist/jboss-eap-7.2 && chmod 0755 /tmp/eap-build/dist/jboss-eap-7.2
 
 FROM alpine:latest
 ENV JBOSS_IMAGE_NAME="lpeters999/eap-full-ci" \
@@ -35,12 +35,12 @@ RUN apk update \
         && rm -rf /var/cache/apk/* /tmp/* /tmp* /usr/share/man /var/tmp/* \
         && wait \
         && mkdir -p /opt/jboss/fr \
- 		&& addgroup -g 501 -S jboss \
-	    && adduser -u 501 -D -h /opt/jboss -s /bin/ash -S jboss -G jboss \
-		&& chmod 755 /opt/jboss
-USER 501
+	&& addgroup -g 433 -S jboss \
+	&& adduser -u 431 -D -h /opt/jboss -s /bin/ash -S jboss -G jboss \
+	&& chmod 755 /opt/jboss
+USER 431
 RUN /opt/jboss/bin/add-user.sh admin Admin#007 --silent
 EXPOSE 8090 10000
 WORKDIR /opt/jboss
-VOLUME [ "/opt/jboss/standalone/deployments", "/opt/jboss/standalone/configuration", "/opt/jboss/fr" ]
+VOLUME [ "/opt/jboss/standalone/configuration", "/opt/jboss/standalone/deployments", "/opt/jboss/fr" ]
 ENTRYPOINT ["sh", "-c", "/opt/jboss/bin/standalone.sh -b 0.0.0.0 -bmanagement 0.0.0.0 -Djboss.socket.binding.port-offset=10"]
