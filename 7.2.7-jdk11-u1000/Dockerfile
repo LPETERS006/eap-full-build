@@ -1,15 +1,16 @@
 FROM lpeters999/base-eap:gosu as builder
 USER 0
-RUN cd /tmp/eap-build \
+RUN addgroup -g 888 -S jboss \
+		&& adduser -u 888 -D -h /opt/jboss -s /bin/ash -S jboss -G jboss \
+		&& cut -d: -f1 /etc/group | xargs -n1 addgroup nobody \
+ 		&& cd /tmp/eap-build \
         && ./build-eap7.sh 7.2.7 \
         && cd ./dist \
         && unzip jboss-eap-7.2.7.zip \
         && cd /tmp \
         && git clone https://github.com/LPETERS006/eap-full-build.git \
         && cp -R -f /tmp/eap-full-build/7.2.7/files/* /tmp/eap-build/dist/jboss-eap-7.2/ \
-        && addgroup -g 888 -S jboss \
-		&& adduser -u 888 -D -h /opt/jboss -s /bin/ash -S jboss -G jboss \
-        && chown -R 888:root /tmp/eap-build/dist/jboss-eap-7.2 && chmod -R 0755 /tmp/eap-build/dist/jboss-eap-7.2
+        && chown -R 888:888 /tmp/eap-build/dist/jboss-eap-7.2 && chmod -R 0755 /tmp/eap-build/dist/jboss-eap-7.2
 
 FROM alpine:latest
 ENV JBOSS_IMAGE_NAME="lpeters999/eap-full-ci" \
@@ -47,12 +48,13 @@ RUN set -eux \
 		&& chmod +x /usr/local/bin/gosu \
 		&& gosu --version \
 		&& gosu nobody true \
+		&& addgroup -g 888 -S jboss \
+		&& adduser -u 888 -D -h /opt/jboss -s /bin/ash -S jboss -G jboss \
+		&& cut -d: -f1 /etc/group | xargs -n1 addgroup nobody \
         && chmod +x /opt/jboss/bin/add-user.sh \
         && rm -rf /var/cache/apk/* /tmp/* /tmp* /usr/share/man /var/tmp/* \
         && wait \
         && mkdir -p /opt/jboss/fr \
-		&& addgroup -g 888 -S jboss \
-		&& adduser -u 888 -D -h /opt/jboss -s /bin/ash -S jboss -G jboss \
 		&& chmod -R 755 /opt/jboss
 USER 888
 RUN /opt/jboss/bin/add-user.sh admin Admin#007 --silent
