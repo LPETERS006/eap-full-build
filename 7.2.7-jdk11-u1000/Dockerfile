@@ -1,4 +1,5 @@
-FROM lpeters999/base-eap:latest as builder
+FROM lpeters999/base-eap:gosu as builder
+USER 0
 RUN cd /tmp/eap-build \
         && ./build-eap7.sh 7.2.7 \
         && cd ./dist \
@@ -6,9 +7,9 @@ RUN cd /tmp/eap-build \
         && cd /tmp \
         && git clone https://github.com/LPETERS006/eap-full-build.git \
         && cp -R -f /tmp/eap-full-build/7.2.7/files/* /tmp/eap-build/dist/jboss-eap-7.2/ \
-        && addgroup -g 433 -S jboss \
-	&& adduser -u 431 -D -h /opt/jboss -s /bin/ash -S jboss -G jboss \
-        && chown -R 431:433 /tmp/eap-build/dist/jboss-eap-7.2 && chmod 0755 /tmp/eap-build/dist/jboss-eap-7.2
+        && addgroup -g 999 -S jboss \
+		&& adduser -u 999 -D -h /opt/jboss -s /bin/ash -S jboss -G jboss \
+        && chown -R 999:999 /tmp/eap-build/dist/jboss-eap-7.2 && chmod -R 0755 /tmp/eap-build/dist/jboss-eap-7.2
 
 FROM alpine:latest
 ENV JBOSS_IMAGE_NAME="lpeters999/eap-full-ci" \
@@ -21,24 +22,39 @@ ENV JBOSS_IMAGE_NAME="lpeters999/eap-full-ci" \
     JBOSS_HOME="/opt/jboss" \
     JBOSS_CONFIG_DIR="/opt/jboss/standalone/configuration" \
     JBOSS_DEPLOY_DIR="/opt/jboss/standalone/deployments" \
-    LANG="C.UTF-8"
+	LANG="C.UTF-8" \
+	GOSU_VERSION="1.12"
 LABEL name="$JBOSS_IMAGE_NAME" \
       version="$JBOSS_IMAGE_VERSION" \
       architecture="x86_64"  \
       maintainer="LPETERS999"
 RUN mkdir -p /opt/jboss/
 COPY --from=builder /tmp/eap-build/dist/jboss-eap-7.2 /opt/jboss
-RUN apk update \
+RUN set -eux \
+		&& apk update \
         && apk add --no-cache --allow-untrusted -f --force-broken-world --clean-protected -u -U -l -q -v openjdk11 fontconfig ttf-dejavu \
         && ln -s -f "/usr/lib/jvm/java-11-openjdk/bin/javac" /usr/bin/javac \
+        && apk add --no-cache --virtual .gosu-deps ca-certificates dpkg gnupg \
+		&& dpkgArch="$(dpkg --print-architecture | awk -F- '{ print $NF }')" \
+		&& wget -O /usr/local/bin/gosu "https://github.com/tianon/gosu/releases/download/$GOSU_VERSION/gosu-$dpkgArch" \
+		&& wget -O /usr/local/bin/gosu.asc "https://github.com/tianon/gosu/releases/download/$GOSU_VERSION/gosu-$dpkgArch.asc" \
+		&& export GNUPGHOME="$(mktemp -d)" \
+		&& gpg --batch --keyserver hkps://keys.openpgp.org --recv-keys B42F6819007F00F88E364FD4036A9C25BF357DD4 \
+		&& gpg --batch --verify /usr/local/bin/gosu.asc /usr/local/bin/gosu \
+		&& command -v gpgconf && gpgconf --kill all || : \
+		&& rm -rf "$GNUPGHOME" /usr/local/bin/gosu.asc \
+		&& apk del --no-network .gosu-deps \
+		&& chmod +x /usr/local/bin/gosu \
+		&& gosu --version \
+		&& gosu nobody true \
         && chmod +x /opt/jboss/bin/add-user.sh \
         && rm -rf /var/cache/apk/* /tmp/* /tmp* /usr/share/man /var/tmp/* \
         && wait \
         && mkdir -p /opt/jboss/fr \
-	&& addgroup -g 433 -S jboss \
-	&& adduser -u 431 -D -h /opt/jboss -s /bin/ash -S jboss -G jboss \
-	&& chmod 755 /opt/jboss
-USER 431
+		&& addgroup -g 999 -S jboss \
+		&& adduser -u 999 -D -h /opt/jboss -s /bin/ash -S jboss -G jboss \
+		&& chmod -R 755 /opt/jboss
+USER 999
 RUN /opt/jboss/bin/add-user.sh admin Admin#007 --silent
 EXPOSE 8090 10000
 WORKDIR /opt/jboss
