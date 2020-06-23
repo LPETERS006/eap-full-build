@@ -7,9 +7,9 @@ RUN cd /tmp/eap-build \
         && cd /tmp \
         && git clone https://github.com/LPETERS006/eap-full-build.git \
         && cp -R -f /tmp/eap-full-build/7.2.7/files/* /tmp/eap-build/dist/jboss-eap-7.2/ \
-        && addgroup -g 999 -S jboss \
-		&& adduser -u 999 -D -h /opt/jboss -s /bin/ash -S jboss -G jboss \
-        && chown -R 999:999 /tmp/eap-build/dist/jboss-eap-7.2 && chmod -R 0755 /tmp/eap-build/dist/jboss-eap-7.2
+        && addgroup -g 888 -S jboss \
+		&& adduser -u 888 -D -h /opt/jboss -s /bin/ash -S jboss -G jboss \
+        && chown -R 888:root /tmp/eap-build/dist/jboss-eap-7.2 && chmod -R 0755 /tmp/eap-build/dist/jboss-eap-7.2
 
 FROM alpine:latest
 ENV JBOSS_IMAGE_NAME="lpeters999/eap-full-ci" \
@@ -51,10 +51,10 @@ RUN set -eux \
         && rm -rf /var/cache/apk/* /tmp/* /tmp* /usr/share/man /var/tmp/* \
         && wait \
         && mkdir -p /opt/jboss/fr \
-		&& addgroup -g 999 -S jboss \
-		&& adduser -u 999 -D -h /opt/jboss -s /bin/ash -S jboss -G jboss \
+		&& addgroup -g 888 -S jboss \
+		&& adduser -u 888 -D -h /opt/jboss -s /bin/ash -S jboss -G jboss \
 		&& chmod -R 755 /opt/jboss
-USER 999
+USER 888
 RUN /opt/jboss/bin/add-user.sh admin Admin#007 --silent
 EXPOSE 8090 10000
 WORKDIR /opt/jboss
