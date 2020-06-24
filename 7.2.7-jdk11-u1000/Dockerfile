@@ -24,7 +24,7 @@ ENV JBOSS_IMAGE_NAME="lpeters999/eap-full-ci" \
     PRODUCT_VERSION="7.2.7" \
     JBOSS_HTTP_PORT="8090" \
     JBOSS_HOME="/opt/jboss" \
-    JBOSS_CONFIG_DIR="/opt/jboss/standalone/configuration" \
+    JBOSS_CONFIG_DIR="/opt/share/standalone/configuration" \
     JBOSS_DEPLOY_DIR="/opt/jboss/standalone/deployments" \
     JBOSS_FR_DIR="/opt/jboss/fr" \
 	LANG="en_US.utf8" \
@@ -36,7 +36,7 @@ LABEL name="$JBOSS_IMAGE_NAME" \
 
 RUN set -eux \
 	&& addgroup -g 71 -S jboss && adduser -u 71 -S -D -G jboss -H -h /opt/jboss -s /bin/ash -S jboss \
-	&& mkdir -p /opt/jboss && mkdir -p /opt/jboss/fr && chown -R jboss:jboss /opt/jboss
+	&& mkdir -p /opt/jboss && mkdir -p /opt/jboss/standalone/fr && mkdir -p /home/jboss && chown -R jboss:jboss /opt/jboss && chown -R jboss:jboss /home/jboss
 	
 COPY --from=builder /tmp/eap-build/dist/jboss-eap-7.2 /opt/jboss
 
@@ -59,8 +59,9 @@ RUN set -eux && apk update && apk add --no-cache --virtual .fetch-deps dpkg gnup
 		&& chmod +x /opt/jboss/bin/add-user.sh && chmod +x /opt/jboss/bin/standalone.sh \
         && rm -rf /var/cache/apk/* /tmp/* /tmp* /usr/share/man /var/tmp/* \
         && wait	
-VOLUME [ "/opt/jboss/standalone/configuration", "/opt/jboss/standalone/deployments", "/opt/jboss/fr" ]		
+VOLUME [ "/home/jboss" ]		
 WORKDIR /opt/jboss
 RUN  ["sh", "-c", "/opt/jboss/bin/add-user.sh admin Admin#007 --silent"]
 EXPOSE 8090 10000
-ENTRYPOINT ["sh", "-c", "/opt/jboss/bin/standalone.sh -b 0.0.0.0 -bmanagement 0.0.0.0 -Djboss.socket.binding.port-offset=10"]
+COPY docker-entrypoint.sh /usr/local/bin/
+ENTRYPOINT ["sh", "-c", "/usr/local/bin/docker-entrypoint.sh", "&&", "sh", "-c", "/opt/jboss/bin/standalone.sh -b 0.0.0.0 -bmanagement 0.0.0.0 -Djboss.socket.binding.port-offset=10"]
