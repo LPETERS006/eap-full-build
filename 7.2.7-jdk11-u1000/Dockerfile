@@ -53,9 +53,7 @@ RUN set -eux && apk update && apk add --no-cache --virtual .fetch-deps dpkg gnup
 		&& apk del .fetch-deps \
 		&& cd / && find /usr/local -name '*.a' -delete \
 	    && chown -R jboss:jboss "$JBOSS_HOME" && chmod 2777 "$JBOSS_HOME" \
-		&& chown -R jboss:jboss "$JBOSS_CONFIG_DIR" && chmod 777 "$JBOSS_CONFIG_DIR" \
-		&& chown -R jboss:jboss "$JBOSS_DEPLOY_DIR" && chmod 777 "$JBOSS_DEPLOY_DIR" \
-		&& chown -R jboss:jboss "$JBOSS_FR_DIR" && chmod 777 "$JBOSS_FR_DIR" \        
+		&& chown -R jboss:jboss "/home/jboss" && chmod 777 "/home/jboss" \ 
 		&& chmod +x /opt/jboss/bin/add-user.sh && chmod +x /opt/jboss/bin/standalone.sh \
         && rm -rf /var/cache/apk/* /tmp/* /tmp* /usr/share/man /var/tmp/* \
         && wait	
