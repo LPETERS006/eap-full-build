@@ -1,4 +1,3 @@
-#!/usr/bin/env bash
 set -Eeo pipefail
 
 local user; user="$(id -u)"

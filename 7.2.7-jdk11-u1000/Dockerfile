@@ -39,6 +39,7 @@ RUN set -eux \
 	&& mkdir -p /opt/jboss && mkdir -p /opt/jboss/standalone/fr && mkdir -p /home/jboss && chown -R jboss:jboss /opt/jboss && chown -R jboss:jboss /home/jboss
 	
 COPY --from=builder /tmp/eap-build/dist/jboss-eap-7.2 /opt/jboss
+COPY docker-entrypoint.sh /usr/local/bin/
 
 RUN set -eux && apk update && apk add --no-cache --virtual .fetch-deps dpkg gnupg openssl tar \
         && apk add --no-cache --allow-untrusted -f --force-broken-world --clean-protected -u -U -l -q -v openjdk11 coreutils fontconfig ttf-dejavu icu ca-certificates \
@@ -54,12 +55,13 @@ RUN set -eux && apk update && apk add --no-cache --virtual .fetch-deps dpkg gnup
 		&& cd / && find /usr/local -name '*.a' -delete \
 	    && chown -R jboss:jboss "$JBOSS_HOME" && chmod 2777 "$JBOSS_HOME" \
 		&& chown -R jboss:jboss "/home/jboss" && chmod 777 "/home/jboss" \ 
-		&& chmod +x /opt/jboss/bin/add-user.sh && chmod +x /opt/jboss/bin/standalone.sh \
+		&& chmod +x /opt/jboss/bin/add-user.sh && chmod +x /opt/jboss/bin/standalone.sh && chmod +x /usr/local/bin/docker-entrypoint.sh \ 
         && rm -rf /var/cache/apk/* /tmp/* /tmp* /usr/share/man /var/tmp/* \
         && wait	
+
+USER jboss
 VOLUME [ "/home/jboss" ]		
 WORKDIR /opt/jboss
 RUN  ["sh", "-c", "/opt/jboss/bin/add-user.sh admin Admin#007 --silent"]
 EXPOSE 8090 10000
-COPY docker-entrypoint.sh /usr/local/bin/
 ENTRYPOINT ["sh", "-c", "/usr/local/bin/docker-entrypoint.sh", "&&", "sh", "-c", "/opt/jboss/bin/standalone.sh -b 0.0.0.0 -bmanagement 0.0.0.0 -Djboss.socket.binding.port-offset=10"]
