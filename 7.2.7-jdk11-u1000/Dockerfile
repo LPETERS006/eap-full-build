@@ -58,11 +58,8 @@ RUN set -eux && apk update && apk add --no-cache --virtual .fetch-deps dpkg gnup
 		&& chown -R jboss:jboss "$JBOSS_FR_DIR" && chmod 777 "$JBOSS_FR_DIR" \        
 		&& chmod +x /opt/jboss/bin/add-user.sh && chmod +x /opt/jboss/bin/standalone.sh \
         && rm -rf /var/cache/apk/* /tmp/* /tmp* /usr/share/man /var/tmp/* \
-        && wait \
-VOLUME /opt/jboss/standalone/configuration
-VOLUME /opt/jboss/standalone/deployments
-VOLUME /opt/jboss/fr		
-
+        && wait	
+VOLUME [ "/opt/jboss/standalone/configuration", "/opt/jboss/standalone/deployments", "/opt/jboss/fr" ]		
 WORKDIR /opt/jboss
 RUN  ["sh", "-c", "/opt/jboss/bin/add-user.sh admin Admin#007 --silent"]
 EXPOSE 8090 10000
