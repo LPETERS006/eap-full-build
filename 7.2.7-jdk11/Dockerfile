@@ -9,7 +9,7 @@ RUN set -eux && addgroup -g 888 -S jboss \
         && git clone https://github.com/LPETERS006/eap-full-build.git \
         && cp -R -f /tmp/eap-full-build/7.2.7/files/* /tmp/eap-build/dist/jboss-eap-7.2/ \
 		&& mkdir -p /opt/jboss/standalone/fr \
-        && chown -R 888:root /tmp/eap-build/dist/jboss-eap-7.2 
+        && chown -R 888:root /tmp/eap-build/dist/jboss-eap-7.2 \
         && chmod -R 0775 /tmp/eap-build/dist/jboss-eap-7.2 && chmod -R a+rwX /tmp/eap-build/dist/jboss-eap-7.2
 
 FROM alpine:latest
