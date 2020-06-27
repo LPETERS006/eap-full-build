@@ -1,6 +1,5 @@
 FROM lpeters999/base-eap:latest as builder
-RUN set -eux && addgroup -g 888 -S jboss \
-        && adduser -u 888 -D -h /tmp/eap-build/dist/jboss-eap-7.2 -s /bin/ash -S jboss -G root \
+RUN set -eux \
 		&& /tmp/eap-build \
         && ./build-eap7.sh 7.2.7 \
         && cd ./dist \
@@ -9,6 +8,8 @@ RUN set -eux && addgroup -g 888 -S jboss \
         && git clone https://github.com/LPETERS006/eap-full-build.git \
         && cp -R -f /tmp/eap-full-build/7.2.7/files/* /tmp/eap-build/dist/jboss-eap-7.2/ \
 		&& mkdir -p /opt/jboss/standalone/fr \
+		&& addgroup -g 888 -S jboss \
+        && adduser -u 888 -D -h /tmp/eap-build/dist/jboss-eap-7.2 -s /bin/ash -S jboss -G root \
         && chown -R 888:root /tmp/eap-build/dist/jboss-eap-7.2 \
         && chmod -R 0775 /tmp/eap-build/dist/jboss-eap-7.2 && chmod -R a+rwX /tmp/eap-build/dist/jboss-eap-7.2
 
@@ -33,7 +34,7 @@ RUN set -eux && addgroup -g 888 -S jboss && adduser -u 888 -D -h /tmp/eap-build/
 RUN mkdir -p /opt/jboss/
 COPY --chown=jboss:root --from=builder /tmp/eap-build/dist/jboss-eap-7.2 /opt/jboss
 RUN set -eux && apk update \
-        && apk add --no-cache --allow-untrusted -f --force-broken-world --clean-protected -u -U -l -q -v coreutils bash su-exec openjdk11 fontconfig ttf-dejavu \
+        && apk add --no-cache --allow-untrusted -f --force-broken-world --clean-protected -u -U -l -q -v coreutils bash su-exec openjdk11 tzdata fontconfig ttf-dejavu \
         && ln -s -f "/usr/lib/jvm/java-11-openjdk/bin/javac" /usr/bin/javac \
         && chmod +x /opt/jboss/bin/*.sh \
         && rm -rf /var/cache/apk/* /tmp/* /tmp* /usr/share/man /var/tmp/* \
