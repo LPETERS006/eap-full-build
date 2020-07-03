@@ -28,12 +28,13 @@ LABEL name="$JBOSS_IMAGE_NAME" \
       maintainer="LPETERS999"
 RUN mkdir -p /opt/jboss/
 COPY --from=builder /tmp/eap-build/dist/jboss-eap-7.1 /opt/jboss
-RUN addgroup -g 888 -S jboss && \
+RUN echo http://nl.alpinelinux.org/alpine/edge/testing >> /etc/apk/repositories \
+	&& apk update \
+        && apk add --no-cache --allow-untrusted -f --force-broken-world --clean-protected -u -U -l -q -v shadow openjdk11 fontconfig ttf-dejavu \
+        && ln -s -f "/usr/lib/jvm/java-11-openjdk/bin/javac" /usr/bin/javac \
+	&& addgroup -g 888 -S jboss && \
 	adduser -u 888 -D -h ${JBOSS_HOME} -s /bin/ash -S jboss -G root && \
 	chown -R 888:root /opt/jboss && chmod 0755 /opt/jboss && chmod -R g+rwX /opt/jboss && \ 
-	apk update \
-        && apk add --no-cache --allow-untrusted -f --force-broken-world --clean-protected -u -U -l -q -v openjdk11 fontconfig ttf-dejavu \
-        && ln -s -f "/usr/lib/jvm/java-11-openjdk/bin/javac" /usr/bin/javac \
         && chmod +x /opt/jboss/bin/add-user.sh \
         && rm -rf /var/cache/apk/* /tmp/* /tmp* /usr/share/man /var/tmp/* \
         && wait \
