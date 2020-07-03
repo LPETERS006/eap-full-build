@@ -34,7 +34,7 @@ RUN echo http://nl.alpinelinux.org/alpine/edge/testing >> /etc/apk/repositories 
         && ln -s -f "/usr/lib/jvm/java-11-openjdk/bin/javac" /usr/bin/javac \
 	&& addgroup -g 888 -S jboss && \
 	adduser -u 888 -D -h ${JBOSS_HOME} -s /bin/ash -S jboss -G root && \
-	chown -R 888:root /opt/jboss && chmod 0755 /opt/jboss && chmod -R g+rwX /opt/jboss && \ 
+	chown -R 888:root /opt/jboss && chmod 0755 /opt/jboss && chmod -R g+rwX /opt/jboss \ 
         && chmod +x /opt/jboss/bin/add-user.sh \
         && rm -rf /var/cache/apk/* /tmp/* /tmp* /usr/share/man /var/tmp/* \
         && wait \
