@@ -12,11 +12,12 @@ RUN cd /tmp/eap-build \
 
 FROM alpine:3.12
 ENV JBOSS_IMAGE_NAME="lpeters999/eap-full-ci" \
-    JBOSS_IMAGE_VERSION="7.1.1-jdk11" \
+    JBOSS_IMAGE_VERSION="7.1.1-jdk11-os" \
     LAUNCH_JBOSS_IN_BACKGROUND="true" \
     JBOSS_PRODUCT="eap" \
     JBOSS_EAP_VERSION="7.1.1" \
     PRODUCT_VERSION="7.1.1" \
+	EAP_HOME="/opt/jboss" \
     JBOSS_HTTP_PORT="8090" \
     JBOSS_HOME="/opt/jboss" \
     JBOSS_CONFIG_DIR="/opt/jboss/standalone/configuration" \
@@ -26,22 +27,20 @@ LABEL name="$JBOSS_IMAGE_NAME" \
       version="$JBOSS_IMAGE_VERSION" \
       architecture="x86_64"  \
       maintainer="LPETERS999"
-RUN mkdir -p /opt/jboss/
-COPY --from=builder /tmp/eap-build/dist/jboss-eap-7.1 /opt/jboss
-RUN echo http://nl.alpinelinux.org/alpine/edge/testing >> /etc/apk/repositories \
-	&& apk update \
-        && apk add --no-cache --allow-untrusted -f --force-broken-world --clean-protected -u -U -l -q -v shadow openjdk11 fontconfig ttf-dejavu \
-        && ln -s -f "/usr/lib/jvm/java-11-openjdk/bin/javac" /usr/bin/javac \
-	&& addgroup -g 888 -S jboss && \
+RUN mkdir -p /opt/jboss/ \
+	&& mkdir -p /opt/jboss/fr
+COPY [--chown=888:root] --from=builder /tmp/eap-build/dist/jboss-eap-7.1 /opt/jboss
+RUN addgroup -g 888 -S jboss && \
 	adduser -u 888 -D -h ${JBOSS_HOME} -s /bin/ash -S jboss -G root && \
-	chown -R 888:root /opt/jboss && chmod 0755 /opt/jboss && chmod -R g+rwX /opt/jboss \ 
-        && chmod +x /opt/jboss/bin/add-user.sh \
-        && rm -rf /var/cache/apk/* /tmp/* /tmp* /usr/share/man /var/tmp/* \
-        && wait \
-        && mkdir -p /opt/jboss/fr
+	chmod +x ${JBOSS_HOME}/bin/add-user.sh && \
+	apk update && \ 
+	apk add --no-cache --allow-untrusted -f --clean-protected -u -l -q -v apk-tools openjdk8 fontconfig ttf-dejavu && \
+	wait && \
+	rm -rf /var/cache/apk/* && \ 
+	ln -s -f "/usr/lib/jvm/java-1.8-openjdk/bin/javac" /usr/bin/javac && \ 
+	wait
 USER 888
-RUN /opt/jboss/bin/add-user.sh admin Admin#007 --silent
+RUN ${JBOSS_HOME}/bin/add-user.sh admin Admin#007 --silent
 EXPOSE 8090 10000
-WORKDIR /opt/jboss
-VOLUME [ "/opt/jboss/standalone/deployments", "/opt/jboss/standalone/configuration", "/opt/jboss/fr" ]
+#VOLUME [ "/opt/jboss/standalone/deployments", "/opt/jboss/standalone/configuration", "/opt/jboss/fr" ]
 ENTRYPOINT ["sh", "-c", "/opt/jboss/bin/standalone.sh -b 0.0.0.0 -bmanagement 0.0.0.0 -Djboss.socket.binding.port-offset=10"]
