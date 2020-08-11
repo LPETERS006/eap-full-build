@@ -39,4 +39,4 @@ latest-7.1.0 latest-7.1.1, latest-7.1.2, latest-7.1.4, latest-7.2.0, latest-7.2.
       - '10000:10000'
 
 
-# Big thanxx to HASALEX for his build-scripts!!! 
+# Big thanxx to HASALEX for his build-scripts (https://github.com/hasalex/eap-build)!!! 
