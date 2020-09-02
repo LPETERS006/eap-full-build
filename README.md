@@ -25,6 +25,11 @@ latest-7.1.0 latest-7.1.1, latest-7.1.2, latest-7.1.4, latest-7.2.0, latest-7.2.
         
 (Than it uses the folders as aspected.)
 
+#### Another good workaround: first export standalone.xml and add ur things. Than mount your application and your settings directly into the container. 
+    
+    volumes:
+      - './app.war:/opt/jboss/standalone/deployments/app.war'
+      - './standalone.xml:/opt/jboss/standalone/configuration/standalone.xml'
 
 ## newer builds without modifed standalone.xml (everyone knows how to add drivers and datascources!)
 
