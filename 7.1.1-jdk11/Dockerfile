@@ -22,7 +22,8 @@ ENV JBOSS_IMAGE_NAME="lpeters999/eap-full-ci" \
     JBOSS_HOME="/opt/jboss" \
     JBOSS_CONFIG_DIR="/opt/jboss/standalone/configuration" \
     JBOSS_DEPLOY_DIR="/opt/jboss/standalone/deployments" \
-    LANG="C.UTF-8"
+    LANG="C.UTF-8" \
+    JAVA_OPTS="-Xms1303m -Xmx1303m -XX:MetaspaceSize=96M -XX:MaxMetaspaceSize=256m -Djava.net.preferIPv4Stack=true --add-modules=ALL-SYSTEM"
 LABEL name="$JBOSS_IMAGE_NAME" \
       version="$JBOSS_IMAGE_VERSION" \
       architecture="x86_64"  \
@@ -43,4 +44,4 @@ USER 888
 RUN ${JBOSS_HOME}/bin/add-user.sh admin Admin#007 --silent
 EXPOSE 8090 10000
 #VOLUME [ "/opt/jboss/standalone/deployments", "/opt/jboss/standalone/configuration", "/opt/jboss/fr" ]
-ENTRYPOINT [ "sh", "-c", "/opt/jboss/bin/standalone.sh -b 0.0.0.0 -bmanagement 0.0.0.0 -Djboss.socket.binding.port-offset=10 --add-modules=ALL-SYSTEM" ]
+ENTRYPOINT [ "sh", "-c", "/opt/jboss/bin/standalone.sh -b 0.0.0.0 -bmanagement 0.0.0.0 -Djboss.socket.binding.port-offset=10" ]
