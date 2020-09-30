@@ -37,10 +37,10 @@ RUN addgroup -g 888 -S jboss && \
 	apk add --no-cache --allow-untrusted -f --clean-protected -u -l -q -v apk-tools openjdk11 fontconfig ttf-dejavu && \
 	wait && \
 	rm -rf /var/cache/apk/* && \ 
-	ln -s -f "/usr/lib/jvm/java-1.8-openjdk/bin/javac" /usr/bin/javac && \ 
+	ln -s -f "/usr/lib/jvm/java-11-openjdk/bin/javac" /usr/bin/javac && \ 
 	wait
 USER 888
 RUN ${JBOSS_HOME}/bin/add-user.sh admin Admin#007 --silent
 EXPOSE 8090 10000
 #VOLUME [ "/opt/jboss/standalone/deployments", "/opt/jboss/standalone/configuration", "/opt/jboss/fr" ]
-ENTRYPOINT ["sh", "-c", "/opt/jboss/bin/standalone.sh -b 0.0.0.0 -bmanagement 0.0.0.0 -Djboss.socket.binding.port-offset=10"]
+ENTRYPOINT [ "sh", "-c", "/opt/jboss/bin/standalone.sh -b 0.0.0.0 -bmanagement 0.0.0.0 -Djboss.socket.binding.port-offset=10 --add-modules=ALL-SYSTEM" ]
