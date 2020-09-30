@@ -22,7 +22,8 @@ ENV JBOSS_IMAGE_NAME="lpeters999/eap-full-ci" \
     JBOSS_HOME="/opt/jboss" \
     JBOSS_CONFIG_DIR="/opt/jboss/standalone/configuration" \
     JBOSS_DEPLOY_DIR="/opt/jboss/standalone/deployments" \
-    LANG="C.UTF-8"
+    LANG="C.UTF-8" \
+    JAVA_OPTS="-Xms1303m -Xmx1303m -XX:MetaspaceSize=96M -XX:MaxMetaspaceSize=256m -Djava.net.preferIPv4Stack=true --add-modules=ALL-SYSTEM"
 LABEL name="$JBOSS_IMAGE_NAME" \
       version="$JBOSS_IMAGE_VERSION" \
       architecture="x86_64"  \
@@ -37,7 +38,7 @@ RUN addgroup -g 888 -S jboss && \
 	apk add --no-cache --allow-untrusted -f --clean-protected -u -l -q -v apk-tools openjdk11 fontconfig ttf-dejavu && \
 	wait && \
 	rm -rf /var/cache/apk/* && \ 
-	ln -s -f "/usr/lib/jvm/java-1.8-openjdk/bin/javac" /usr/bin/javac && \ 
+	ln -s -f "/usr/lib/jvm/java-11-openjdk/bin/javac" /usr/bin/javac && \ 
 	wait
 USER 888
 RUN ${JBOSS_HOME}/bin/add-user.sh admin Admin#007 --silent
