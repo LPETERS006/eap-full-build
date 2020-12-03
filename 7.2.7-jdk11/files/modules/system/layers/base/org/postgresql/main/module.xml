@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <module xmlns="urn:jboss:module:1.1" name="org.postgresql">
 	<resources>
-		<resource-root path="postgresql-42.2.12.jar"/>
-		<resource-root path="postgis-jdbc-1.5.3.jar"/>
+		<resource-root path="postgresql-42.2.18.jar"/>
+		<resource-root path="postgis-jdbc-2.5.0.jar"/>
+		<resource-root path="postgis-geometry-2.5.0.jar"/>
 	</resources>
 	<dependencies>
 		<module name="javax.api"/>
