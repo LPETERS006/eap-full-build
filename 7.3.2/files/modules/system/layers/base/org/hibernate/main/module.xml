@@ -23,9 +23,9 @@
 <!-- Represents Hibernate 5.1.x, will later become 5.3.x for WF 14  -->
 <module name="org.hibernate" xmlns="urn:jboss:module:1.7">
     <resources>
-        <resource-root path="hibernate-core-5.3.16.Final-redhat-00001.jar"/>
-        <resource-root path="hibernate-envers-5.3.16.Final-redhat-00001.jar"/> 
-		<resource-root path="hibernate-spatial-5.3.16.Final.jar"/>
+        <resource-root path="hibernate-core-5.3.17.Final-redhat-00001.jar"/>
+        <resource-root path="hibernate-envers-5.3.17.Final-redhat-00001.jar"/> 
+		<resource-root path="hibernate-spatial-5.3.17.Final.jar"/>
 		<resource-root path="jts-core-1.17.1.jar"/>
 		<resource-root path="geolatte-geom-1.6.0.jar"/>
     </resources>
