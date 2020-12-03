@@ -1,4 +1,4 @@
-FROM lpeters999/base-eap:test as builder
+FROM lpeters999/base-eap:3.12 as builder
 RUN cd /tmp/eap-build \
         && ./build-eap7.sh 7.3.2 \
         && cd ./dist \
