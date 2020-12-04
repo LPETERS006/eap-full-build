@@ -26,8 +26,8 @@
         <resource-root path="hibernate-core-5.3.14.Final-redhat-00001.jar"/>
         <resource-root path="hibernate-envers-5.3.14.Final-redhat-00001.jar"/> 
 		<resource-root path="hibernate-spatial-5.3.14.Final.jar"/>
-		<resource-root path="jts-1.13.jar"/>
-		<resource-root path="geolatte-geom-1.0.6.jar"/>
+		<resource-root path="jts-core-1.14.0.jar"/>
+		<resource-root path="geolatte-geom-1.6.0.jar"/>
     </resources>
 
     <dependencies>
