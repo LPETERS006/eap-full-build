@@ -24,10 +24,10 @@
 <module name="org.hibernate" xmlns="urn:jboss:module:1.7">
     <resources>
         <resource-root path="hibernate-core-5.3.17.Final-redhat-00001.jar"/>
-        <resource-root path="hibernate-envers-5.3.17.Final-redhat-00001.jar"/> 
-		<resource-root path="hibernate-spatial-5.3.17.Final.jar"/>
-		<resource-root path="jts-core-1.14.0.jar"/>
-		<resource-root path="geolatte-geom-1.6.0.jar"/>
+        <resource-root path="hibernate-envers-5.3.17.Final-redhat-00001.jar"/>
+        <resource-root path="hibernate-spatial-5.3.17.Final.jar"/>
+        <resource-root path="jts-core-1.14.0.jar"/>
+        <resource-root path="geolatte-geom-1.6.0.jar"/>
     </resources>
 
     <dependencies>
@@ -50,8 +50,8 @@
         <module name="org.hibernate.jipijapa-hibernate5-3" services="import"/>
         <module name="org.infinispan.hibernate-cache" services="import" optional="true"/>
         <module name="net.bytebuddy"/>
-		<module name="org.postgresql"/>
-		<module name="org.slf4j"/>
+        <module name="org.postgresql"/>
+        <module name="org.slf4j"/>
     </dependencies>
 </module>
 

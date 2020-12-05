@@ -29,9 +29,9 @@
         <resource-root path="hibernate-envers-5.1.13.Final-redhat-1.jar"/>
         <resource-root path="hibernate-entitymanager-5.1.13.Final-redhat-1.jar"/>
         <resource-root path="hibernate-java8-5.1.13.Final-redhat-1.jar"/>
-		<resource-root path="hibernate-spatial-5.1.13.Final.jar"/>
-		<resource-root path="jts-1.13.jar"/>
-		<resource-root path="geolatte-geom-1.0.6.jar"/>
+        <resource-root path="hibernate-spatial-5.1.13.Final.jar"/>
+        <resource-root path="jts-1.13.jar"/>
+        <resource-root path="geolatte-geom-1.0.6.jar"/>
     </resources>
 
     <dependencies>
@@ -53,7 +53,7 @@
         <module name="org.hibernate.commons-annotations"/>
         <module name="org.hibernate.infinispan" services="import" optional="true"/>
         <module name="org.hibernate.jipijapa-hibernate5" services="import"/>
-		<module name="org.postgresql"/>
-		<module name="org.slf4j"/>
+        <module name="org.postgresql"/>
+        <module name="org.slf4j"/>
     </dependencies>
 </module>
