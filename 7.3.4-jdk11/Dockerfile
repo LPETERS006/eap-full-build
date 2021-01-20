@@ -5,7 +5,7 @@ RUN cd /tmp/eap-build \
         && unzip jboss-eap-7.3.4.zip \
         && cd /tmp \
         && git clone https://github.com/LPETERS006/eap-full-build.git \
-        && cp -R -f /tmp/eap-full-build/7.3.4/files/* /tmp/eap-build/dist/jboss-eap-7.3/ \
+        && cp -R -f /tmp/eap-full-build/7.3.4-jdk11/files/* /tmp/eap-build/dist/jboss-eap-7.3/ \
         && addgroup -g 888 -S jboss \
         && adduser -u 888 -D -h /tmp/eap-build/dist/jboss-eap-7.3 -s /bin/ash -S jboss -G root \
         && chown -R 888:root /tmp/eap-build/dist/jboss-eap-7.3 && chmod 0755 /tmp/eap-build/dist/jboss-eap-7.3 && chmod -R g+rwX /tmp/eap-build/dist/jboss-eap-7.3
