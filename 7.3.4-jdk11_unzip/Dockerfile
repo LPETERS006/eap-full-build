@@ -41,4 +41,4 @@ USER 888
 EXPOSE 8090 10000
 #VOLUME [ "/opt/jboss/standalone/deployments", "/opt/jboss/standalone/configuration", "/opt/jboss/fr" ]
 
-ENTRYPOINT ["sh", "-c", "unzip", "-n", "/opt/jboss-eap-7.3.4.zip", "-d", "/opt/jboss", "&&", "chmod", "+x", "${JBOSS_HOME}/bin/*.sh", "&&", "${JBOSS_HOME}/bin/add-user.sh", "admin", "Admin#007", "--silent", "&&" "/opt/jboss/bin/standalone.sh -b 0.0.0.0 -bmanagement 0.0.0.0 -Djboss.socket.binding.port-offset=10"]
+ENTRYPOINT ["sh", "-c", "unzip", "-n", "/opt/jboss-eap-7.3.4.zip", "-d", "/opt/jboss", "&&", "chmod", "+x", "${JBOSS_HOME}/bin/*.sh", "&&", "${JBOSS_HOME}/bin/add-user.sh", "admin", "Admin#007", "--silent", "&&", "/opt/jboss/bin/standalone.sh -b 0.0.0.0 -bmanagement 0.0.0.0 -Djboss.socket.binding.port-offset=10"]
