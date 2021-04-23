@@ -30,7 +30,7 @@ LABEL name="$JBOSS_IMAGE_NAME" \
       maintainer="LPETERS999"
 RUN mkdir -p /opt/jboss/ \
 	&& mkdir -p /opt/jboss/fr
-COPY --from=builder --chown=888:root /tmp/eap-build/dist/jboss-eap-7.3.4.zip /opt/
+COPY --from=builder --chown=888:root /tmp/jboss-eap-7.3.4.zip /opt/
 RUN addgroup -g 888 -S jboss && \
 	adduser -u 888 -D -h ${JBOSS_HOME} -s /bin/ash -S jboss -G root && \
 	chmod +x ${JBOSS_HOME}/bin/*.sh && \
