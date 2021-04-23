@@ -31,18 +31,14 @@ LABEL name="$JBOSS_IMAGE_NAME" \
 RUN mkdir -p /opt/jboss/ \
 	&& mkdir -p /opt/jboss/fr
 COPY --from=builder --chown=888:root /tmp/jboss-eap-7.3.4.zip /opt/
-RUN addgroup -g 888 -S jboss && \
-	adduser -u 888 -D -h ${JBOSS_HOME} -s /bin/ash -S jboss -G root && \
-	chmod +x ${JBOSS_HOME}/bin/*.sh && \
-	apk update && \ 
+RUN apk update && \ 
 	apk add --no-cache --allow-untrusted -f --clean-protected -u -l -q -v apk-tools openjdk11 fontconfig ttf-dejavu && \
 	wait && \
 	rm -rf /var/cache/apk/* && \ 
 	ln -s -f "/usr/lib/jvm/java-11-openjdk/bin/javac" /usr/bin/javac && \ 
 	wait
 USER 888
-RUN ${JBOSS_HOME}/bin/add-user.sh admin Admin#007 --silent
 EXPOSE 8090 10000
 #VOLUME [ "/opt/jboss/standalone/deployments", "/opt/jboss/standalone/configuration", "/opt/jboss/fr" ]
-CMD ["sh", "-c", "unzip", "-n", "/opt/jboss-eap-7.3.4.zip", "-d", "/opt/jboss"]
+CMD ["sh", "-c", "unzip", "-n", "/opt/jboss-eap-7.3.4.zip", "-d", "/opt/jboss", "&&", "chmod", "+x", "${JBOSS_HOME}/bin/*.sh", "&&", "${JBOSS_HOME}/bin/add-user.sh", "&&", "admin", "Admin#007", "--silent" ]
 ENTRYPOINT ["sh", "-c", "/opt/jboss/bin/standalone.sh -b 0.0.0.0 -bmanagement 0.0.0.0 -Djboss.socket.binding.port-offset=10"]
