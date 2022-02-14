@@ -1,7 +1,7 @@
 FROM lpeters999/base-eap:latest as builder
-RUN cd /tmp/eap-build && ./build-eap7.sh 7.4.0 && cd ./dist && unzip jboss-eap-7.4.0.zip && cd /tmp && \ 
+RUN cd /tmp/eap-build && ./build-eap7.sh 7.4.0 && cd ./dist && unzip jboss-eap-7.4.0.zip >/dev/null&& cd /tmp && \ 
     git clone https://github.com/LPETERS006/eap-full-build.git && \
-    cp -R -f /tmp/eap-full-build/7.4.0-jdk11/files/* /tmp/eap-build/dist/jboss-eap-7.4/ && \
+    cp -R -f /tmp/eap-full-build/7.4.0-jdk11/files/* /tmp/eap-build/dist/jboss-eap-7.4/ >/dev/null && \
     addgroup -g 888 -S jboss && adduser -u 888 -D -h /tmp/eap-build/dist/jboss-eap-7.4 -s /bin/ash -S jboss -G root && \
     chown -R 888:root /tmp/eap-build/dist/jboss-eap-7.4 && chmod 0755 /tmp/eap-build/dist/jboss-eap-7.4 && chmod -R g+rwX /tmp/eap-build/dist/jboss-eap-7.4
 

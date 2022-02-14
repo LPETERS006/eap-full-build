@@ -1,8 +1,8 @@
 FROM lpeters999/base-eap:ajdk8-alpine as builder
-RUN cd /tmp/eap-build && ./build-eap7.sh 7.0.5 && cd ./dist && unzip jboss-eap-7.0.5.zip && cd /tmp && \ 
+RUN cd /tmp/eap-build && ./build-eap7.sh 7.0.5 && cd ./dist && unzip jboss-eap-7.0.5.zip >/dev/null && cd /tmp && \ 
     git clone https://github.com/LPETERS006/eap-full-build.git && \
     cp -f /tmp/eap-full-build/7.0.5-jdk8/jboss-eap-7.properties /tmp/eap-build/src/jboss-eap-7.properties && \
-    cp -R -f /tmp/eap-full-build/7.0.5-jdk8/files/* /tmp/eap-build/dist/jboss-eap-7.0/ && \
+    cp -R -f /tmp/eap-full-build/7.0.5-jdk8/files/* /tmp/eap-build/dist/jboss-eap-7.0/ >/dev/null && \
     addgroup -g 888 -S jboss && adduser -u 888 -D -h /tmp/eap-build/dist/jboss-eap-7.0 -s /bin/ash -S jboss -G root && \
     chown -R 888:root /tmp/eap-build/dist/jboss-eap-7.0 && chmod 0755 /tmp/eap-build/dist/jboss-eap-7.0 && chmod -R g+rwX /tmp/eap-build/dist/jboss-eap-7.0
 
@@ -20,7 +20,7 @@ ENV JBOSS_IMAGE_NAME="lpeters999/eap-full-ci" \
     JBOSS_CONFIG_DIR="/opt/jboss/standalone/configuration" \
     JBOSS_DEPLOY_DIR="/opt/jboss/standalone/deployments" \
     LANG="C.UTF-8" \
-    JAVA_OPTS="-Xms1303m -Xmx2048m -XX:MaxPermSize=1024m -XX:MetaspaceSize=256M -Djava.net.preferIPv4Stack=true --add-modules=ALL-SYSTEM"
+    JAVA_OPTS="-Xms1303m -Xmx2048m -XX:MaxPermSize=1024m -XX:MetaspaceSize=256M -Djava.net.preferIPv4Stack=true"
 RUN mkdir -p /opt/jboss/ /opt/jboss/fr
 COPY --from=builder --chown=888:root /tmp/eap-build/dist/jboss-eap-7.0 /opt/jboss
 RUN addgroup -g 888 -S jboss && adduser -u 888 -D -h ${JBOSS_HOME} -s /bin/ash -S jboss -G root && chmod +x ${JBOSS_HOME}/bin/*.sh && \
