@@ -1,11 +1,11 @@
-FROM lpeters999/base-eap:ajdk8-alpine as builder
+FROM lpeters999/base-eap:et_jdk8-alpine as builder
 RUN cd /tmp/eap-build && ./build-eap7.sh 7.1.2 && cd ./dist && unzip jboss-eap-7.1.2.zip >/dev/null && cd /tmp && \ 
     git clone https://github.com/LPETERS006/eap-full-build.git && \
     cp -R -f /tmp/eap-full-build/7.1.2-jdk8/files/* /tmp/eap-build/dist/jboss-eap-7.1/ >/dev/null && \
     addgroup -g 888 -S jboss && adduser -u 888 -D -h /tmp/eap-build/dist/jboss-eap-7.1 -s /bin/ash -S jboss -G root && \
     chown -R 888:root /tmp/eap-build/dist/jboss-eap-7.1 && chmod 0755 /tmp/eap-build/dist/jboss-eap-7.1 && chmod -R g+rwX /tmp/eap-build/dist/jboss-eap-7.1
 
-FROM adoptopenjdk/openjdk8:alpine
+FROM eclipse-temurin:8-jdk-alpine
 LABEL name="$JBOSS_IMAGE_NAME" version="$JBOSS_IMAGE_VERSION" architecture="x86_64" maintainer="LPETERS999"
 ENV JBOSS_IMAGE_NAME="lpeters999/eap-full-ci" \
     JBOSS_IMAGE_VERSION="7.1.2-jdk8" \
